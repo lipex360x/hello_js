@@ -1,0 +1,58 @@
+<html>
+  <script>
+    function arredondar (valor) {
+      return Math.round(valor * 100) / 100
+    }
+
+    function calcularJuros(valor) {
+      return arredondar(valor * 0.1)
+    }
+
+    function calcularRendimentos(valor) {
+      return arredondar(valor * 0.005)
+    }
+
+    function calcularSaldo(saldoInicial, salario, aluguel, contaDeLuz, contaDeAgua, internet, transporte, lazer, alimentacao) {
+      saldo = saldoInicial + salario - aluguel - contaDeLuz - contaDeAgua - internet - transporte - lazer - alimentacao
+      if (saldo < 0) return arredondar(saldo += calcularJuros(saldo))
+      return arredondar(saldo += calcularRendimentos(saldo))
+    }
+
+    // Janeiro
+    salario1 = 3000
+    aluguel1 = 1000
+    contaDeAgua1 = 200
+    contaDeLuz1 = 100
+    internet1 = 100
+    transporte1 = 300
+    lazer1 = 300
+    alimento1 = 500
+    saldo1 = calcularSaldo(0, salario1, aluguel1, contaDeLuz1, contaDeAgua1, internet1, transporte1, lazer1, alimento1)
+    console.log("Janeiro:", saldo1)
+
+    // Fevereiro
+    salario2 = 3000
+    aluguel2 = 1200
+    contaDeAgua2 = 100
+    contaDeLuz2 = 250
+    internet2 = 100
+    transporte2 = 500
+    lazer2 = 0
+    alimento2 = 1000
+    saldo2 = calcularSaldo(saldo1, salario2, aluguel2, contaDeLuz2, contaDeAgua2, internet2, transporte2, lazer2, alimento2)
+    console.log("Fevereiro:", saldo2)
+
+    // Março
+    salario3 = 4000
+    aluguel3 = 1200
+    contaDeAgua3 = 200
+    contaDeLuz3 = 100
+    internet3 = 200
+    transporte3 = 500
+    lazer3 = 800
+    alimento3 = 1000
+    saldo3 = calcularSaldo(saldo2, salario3, aluguel3, contaDeLuz3, contaDeAgua3, internet3, transporte3, lazer3, alimento3)
+    console.log("Março:", saldo3)
+
+  </script>
+</html>
