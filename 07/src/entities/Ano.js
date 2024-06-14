@@ -1,4 +1,4 @@
-class Ano {
+export class Ano {
   constructor() {
     this.meses = []
   }

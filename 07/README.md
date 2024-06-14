@@ -50,7 +50,7 @@ node_modules
 
 #### Fase 3 - Tailwind
 
-> yarn add -D tailwindcss postcss autoprefixer
+> yarn add -D tailwindcss postcss autoprefixer sass
 
 > npx tailwindcss init -p
 
@@ -61,14 +61,7 @@ node_modules
 ...
 ```
 
-* main.js
-```js
-import './style.css'
-console.log('hello world')
-```
-
-
-* styles.css
+* styles.scss
 ```css
 @tailwind base;
 @tailwind components;
@@ -78,4 +71,17 @@ body {
   @apply antialiased;
 }
 
+```
+
+* main.js
+```js
+import './style.scss'
+console.log('hello world')
+```
+
+* .vscode/settings.json
+```.json
+{
+  "scss.lint.unknownAtRules": "ignore",
+}
 ```

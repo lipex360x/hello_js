@@ -1,4 +1,6 @@
-class Mes {
+import { arredondar } from '../misc/utils'
+
+export class Mes {
   constructor(nome) {
     if (!nome) throw new Error('Mês inválido')
     this.nome = nome

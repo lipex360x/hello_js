@@ -1,4 +1,4 @@
-class Lancamento {
+export class Lancamento {
   constructor(categoria, tipo, valor) {
     if (tipo !== "receita" && tipo !== "despesa") throw new Error('Tipo inválido [receita / despesa]')
     if (valor <= 0) throw new Error('Valor precisa ser um número positivo')

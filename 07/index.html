@@ -3,23 +3,22 @@
     <meta charset="UTF-8">
   </head>
 <body>
-  <h3>Finanças Pessoais</h3>
-  <input type="text" id="mes" placeholder="mês">
-  <select id="tipo">
-    <option value="">selecione</option>
-    <option value="receita">receita</option>
-    <option value="despesa">despesa</option>
-  </select>
-  <input type="text" id="categoria" placeholder="categoria">
-  <input type="number" id="valor" placeholder="valor">
-  <button id="botao">Adicionar Lançamento</button>
-  <div id="app"></div>
+  <h2>Finanças Pessoais</h2>
+  <div class="formulario">
+    <select id="mes">
+      <option value="">mês</option>
+    </select>
+    <select id="tipo">
+      <option value="">tipo</option>
+      <option value="receita">receita</option>
+      <option value="despesa">despesa</option>
+    </select>
+    <input type="text" id="categoria" placeholder="categoria">
+    <input type="number" id="valor" placeholder="valor">
+    <button id="botao">Adicionar Lançamento</button>
+  </div>
+  <div id="app" class="pl-4 pb-10"></div>
 
-  <script src="Lancamento.js"></script>
-  <script src="Mes.js"></script>
-  <script src="Ano.js"></script>
-  <script src="utils.js"></script>
-  <script src="main.js" type="module"></script>
-  <!-- <script src="test.js"></script> -->
+  <script src="./src/main.js" type="module"></script>
 </body>
 </html>
