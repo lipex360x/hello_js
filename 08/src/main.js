@@ -3,6 +3,7 @@ import { Lancamento } from './entities/Lancamento'
 import { Mes } from './entities/Mes'
 import { Ano } from './entities/Ano'
 import { formatarDinheiro } from './misc/utils'
+import { Table } from './components/Table'
 
 const janeiro = new Mes('Janeiro')
 janeiro.adicionarLancamento(new Lancamento("Salário", "receita", 3000 ))
@@ -58,37 +59,15 @@ function renderizar () {
   
   for (const mes of ano.meses) {
     addElement(painel, 'h3', mes.nome)
-    const tabelaLancamentos = document.createElement('table')
-    tabelaLancamentos.className = "lancamentos"
-    
-    const linhaTitulo = document.createElement('tr')
-    addElement(linhaTitulo, 'th', 'Categoria')
-    addElement(linhaTitulo, 'th', 'Valor')
-    tabelaLancamentos.appendChild(linhaTitulo)
-
+    const tabelaLancamentos = new Table('lancamentos')
+    tabelaLancamentos.addRow('th', ['Categoria', 'Valor'])
     for (const lancamento of mes.lancamentos) {
-      const linhaLancamento = document.createElement('tr')
-      addElement(linhaLancamento, 'td', lancamento.categoria)
-      addElement(linhaLancamento, 'td', formatarDinheiro(lancamento.valor))
-      tabelaLancamentos.appendChild(linhaLancamento)
+      tabelaLancamentos.addRow('td', [lancamento.categoria, formatarDinheiro(lancamento.getValorText())])
     }
-
-    const linhaJuros = document.createElement('tr')
-    addElement(linhaJuros, 'th', 'Juros')
-    addElement(linhaJuros, 'th', formatarDinheiro(mes.totalizador.juros))
-    tabelaLancamentos.appendChild(linhaJuros)
-
-    const linhaRendimento = document.createElement('tr')
-    addElement(linhaRendimento, 'th', 'Rendimentos')
-    addElement(linhaRendimento, 'th', formatarDinheiro(mes.totalizador.rendimentos))
-    tabelaLancamentos.appendChild(linhaRendimento)
-
-    const linhaSaldo = document.createElement('tr')
-    addElement(linhaSaldo, 'th', 'Total')
-    addElement(linhaSaldo, 'th', formatarDinheiro(mes.totalizador.saldo))
-    tabelaLancamentos.appendChild(linhaSaldo)
-    
-    painel.appendChild(tabelaLancamentos)
+    tabelaLancamentos.addRow('th', ['Juros', formatarDinheiro(mes.totalizador.juros)])
+    tabelaLancamentos.addRow('th', ['Rendimentos', formatarDinheiro(mes.totalizador.rendimentos)])
+    tabelaLancamentos.addRow('th', ['Total', formatarDinheiro(mes.totalizador.saldo)])
+    painel.appendChild(tabelaLancamentos.element)
   }
   app.appendChild(painel)
 }
