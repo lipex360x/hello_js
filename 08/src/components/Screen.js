@@ -2,10 +2,10 @@ import { Ano } from "../entities/Ano"
 import { Lancamento } from "../entities/Lancamento"
 import { Mes } from "../entities/Mes"
 import { formatarDinheiro } from "../misc/utils"
-import { Chart } from "./Chart"
-import { Div } from "./Div"
-import { Header } from "./Header"
-import { Table } from "./Table"
+import { Chart } from "./app/Chart"
+import { Div } from "./base/Div"
+import { Header } from "./base/Header"
+import { Table } from "./base/Table"
 import { Button } from "./form/Button"
 import { Input } from "./form/Input"
 import { Select } from "./form/Select"
@@ -51,11 +51,11 @@ export class Screen {
   }
 
   renderizar () {
-    const app = document.getElementById('app')
+    document.getElementById('app').remove()
+    const app = new Div('app')
     if (app.firstChild) app.firstChild.remove()
-    const painel = new Div()
     const titulo = new Header('h2', 'Finanças Pessoais')
-    painel.addChildElement(titulo.element)
+    app.addChildElement(titulo.element)
     const form = new Div('', 'formulario')
     const selectMes = new Select('mes')
     const selectTipo = new Select('tipo')
@@ -76,16 +76,16 @@ export class Screen {
     const button = new Button('button', 'Adicionar Transação')
     button.addListener(() => this.adicionarLancamento())
     form.addChildElement(button.element)
-    painel.addChildElement(form.element)
+    app.addChildElement(form.element)
     const grafico = new Chart('teste','teste')
   
     for (const mes of this.ano.meses) {
       grafico.addColumn(mes.totalizador.saldo, mes.nome)
     }
-    painel.addChildElement(grafico.element)
+    app.addChildElement(grafico.element)
     for (const mes of this.ano.meses) {
       const nomeDoMes = new Header('h3', mes.nome)
-      painel.addChildElement(nomeDoMes.element)
+      app.addChildElement(nomeDoMes.element)
       const tabelaLancamentos = new Table('lancamentos')
       tabelaLancamentos.addRow('th', ['Categoria', 'Valor'])
       for (const lancamento of mes.lancamentos) {
@@ -94,9 +94,9 @@ export class Screen {
       tabelaLancamentos.addRow('th', ['Juros', formatarDinheiro(mes.totalizador.juros)])
       tabelaLancamentos.addRow('th', ['Rendimentos', formatarDinheiro(mes.totalizador.rendimentos)])
       tabelaLancamentos.addRow('th', ['Total', formatarDinheiro(mes.totalizador.saldo)])
-      painel.addChildElement(tabelaLancamentos.element)
+      app.addChildElement(tabelaLancamentos.element)
     }
-    app.appendChild(painel.element)
+    const [body] = document.getElementsByTagName('body')
+    body.appendChild(app.element)
   }
-  
 }
