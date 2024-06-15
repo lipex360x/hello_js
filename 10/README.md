@@ -23,3 +23,11 @@ app.use(express.json())
 app.use(cors())
 
 ```
+
+#### Fase 2 - Database
+
+> yarn add pg-promise
+
+* docker-compose
+
+* migration.sql

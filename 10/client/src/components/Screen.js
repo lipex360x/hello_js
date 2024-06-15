@@ -23,7 +23,7 @@ export class Screen {
     ano.adicionarMes(new Mes('Fevereiro'))
     ano.adicionarMes(new Mes('Março'))
     for (const lancamento of lancamentos) {
-      ano.adicionarLancamento(lancamento.mes, new Lancamento(lancamento.categoria, lancamento.tipo, lancamento.valor))
+      ano.adicionarLancamento(lancamento.mes, new Lancamento(lancamento.categoria, lancamento.tipo, parseFloat(lancamento.valor)))
     }
     ano.calcularSaldo()
     this.ano = ano
