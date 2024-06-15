@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply antialiased;
+}
+
+input, select, button {
+  @apply border rounded-md p-1;
+}
+
+button {
+  @apply bg-black text-white;
+}
+
+h2 {
+  @apply text-2xl p-4 text-center
+}
+
+.formulario {
+  @apply fixed right-4 flex flex-col gap-2 p-4 border bg-white shadow rounded;
+}
+
+.grafico {
+  @apply w-[600px] h-[200px] border border-slate-300 flex flex-row justify-around items-end;
+
+  .coluna {
+    @apply w-[100px];
+  }
+
+  .cor {
+    @apply h-[120px] w-[100px] bg-red-500;
+  }
+
+  .texto {
+    @apply text-center;
+  }
+}
+
+table.lancamentos {
+  @apply border w-[600px] bg-slate-50;
+
+  th {
+    @apply text-left p-2 border bg-slate-200 w-1/2;
+  }
+
+  tr {   
+    &:nth-child(even) {
+      @apply bg-white;
+    }
+
+    td {
+      @apply p-2 border;
+    }
+  }
+}
