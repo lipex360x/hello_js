@@ -18,4 +18,10 @@ app.get('/api/lancamentos', (request, response) => {
   response.json(lancamentos)
 })
 
+app.post('/api/lancamentos', (request, response) => {
+  const lancamento = request.body
+  lancamentos.push(lancamento)
+  response.end()
+})
+
 app.listen(3000)

@@ -30,19 +30,29 @@ export class Screen {
     this.renderizar()
   }
 
-  adicionarLancamento() {
+  async adicionarLancamento() {
     const inputMes = document.getElementById('mes')
     const selectTipo = document.getElementById('tipo') 
     const inputCategoria = document.getElementById('categoria') 
     const inputValor = document.getElementById('valor')
     const lancamento = new Lancamento(inputCategoria.value, selectTipo.value, parseFloat(inputValor.value))
     this.ano.adicionarLancamento(inputMes.value, lancamento)
-    this.renderizar()
+    await fetch('http://localhost:3000/api/lancamentos', { 
+      method: 'post',
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ 
+        mes: inputMes.value,
+        tipo: selectTipo.value,
+        categoria: inputCategoria.value,
+        valor: parseFloat(inputValor.value)
+      })
+    })
     inputMes.value = ""
     selectTipo.value = ""
     inputValor.value = ""
     inputCategoria.value = ""
     this.ano.calcularSaldo()
+    this.renderizar()
   }
 
   renderizar () {
