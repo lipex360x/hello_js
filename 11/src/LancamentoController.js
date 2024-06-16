@@ -11,9 +11,9 @@ export class LancamentoController {
       await lancamentoDAO.saveLancamento(lancamento)
     })
 
-    // httpServer.register('delete', '/api/lancamentos/:idLancamento', async (params, body) => {
-    //   const idLancamento = params.idLancamento
-    //   await lancamentoDAO.deleteLancamento(idLancamento)
-    // })
+    httpServer.register('delete', '/api/lancamentos/:idLancamento', async (params, body) => {
+      const idLancamento = params.idLancamento
+      await lancamentoDAO.deleteLancamento(idLancamento)
+    })
   }
 }
