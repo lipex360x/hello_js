@@ -5,7 +5,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch ./src/server.js"
+    "dev": "tsx watch ./src/main.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
