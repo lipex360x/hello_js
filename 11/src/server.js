@@ -1,13 +1,13 @@
 import express from 'express'
 import cors from 'cors'
-import pgp from 'pg-promise'
 import cuid from 'cuid'
+import { Connection } from './Connection'
 
 const app = express()
 app.use(express.json())
 app.use(cors())
 
-const connection = pgp()("postgres://postgres:docker@localhost:5432/app")
+const connection = new Connection()
 
 app.get('/api/lancamentos', async (request, response) => {
   const lancamentos = await connection.query("select * from branas.lancamento", [])
