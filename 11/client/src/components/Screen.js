@@ -11,13 +11,13 @@ import { Input } from "./form/Input"
 import { Select } from "./form/Select"
 
 export class Screen {
-  constructor () {
+  constructor (client) {
+    this.client = client
     this.init()
   }
 
   async init () {
-    const response = await fetch("http://localhost:3000/api/lancamentos")
-    const lancamentos = await response.json()
+    const { data: lancamentos } = await this.client.get("/api/lancamentos")
     const ano = new Ano()
     ano.adicionarMes(new Mes('Janeiro'))
     ano.adicionarMes(new Mes('Fevereiro'))
