@@ -25,31 +25,6 @@ export class Screen {
     this.renderizar()
   }
 
-  async adicionarLancamento() {
-    const inputMes = document.getElementById('mes')
-    const selectTipo = document.getElementById('tipo') 
-    const inputCategoria = document.getElementById('categoria') 
-    const inputValor = document.getElementById('valor')
-    const lancamento = Lancamento.create(inputMes.value, inputCategoria.value, selectTipo.value, parseFloat(inputValor.value))
-    this.ano.adicionarLancamento(inputMes.value, lancamento)
-    const lancamentoData = { 
-      mes: inputMes.value,
-      tipo: selectTipo.value,
-      categoria: inputCategoria.value,
-      valor: parseFloat(inputValor.value)
-    }
-    await this.lancamentoService.saveLancamento(lancamentoData)
-    this.ano.calcularSaldo()
-    this.renderizar()
-  }
-
-  async deletarLancamento(mes, lancamento) {
-    await this.lancamentoService.deleteLancamento(lancamento.idLancamento)
-    this.ano.deletarLancamento(mes, lancamento)
-    this.ano.calcularSaldo()
-    this.renderizar()
-  }
-
   renderizar () {
     document.getElementById('app').remove()
     const app = new Div('app')
@@ -57,21 +32,21 @@ export class Screen {
     const titulo = new Header('h2', 'Finanças Pessoais')
     app.addChildElement(titulo.element)
     const form = new Div('', 'formulario')
-    const selectMes = new Select('mes')
-    const selectTipo = new Select('tipo')
-    selectTipo.addOption('', 'selecione')
-    selectTipo.addOption('receita', 'receita')
-    selectTipo.addOption('despesa', 'despesa')
-    form.addChildElement(selectMes.element)
-    selectMes.addOption('', 'selecione')
+    this.selectMes = new Select('mes')
+    this.selectTipo = new Select('tipo')
+    this.selectTipo.addOption('', 'selecione')
+    this.selectTipo.addOption('receita', 'receita')
+    this.selectTipo.addOption('despesa', 'despesa')
+    form.addChildElement(this.selectMes.element)
+    this.selectMes.addOption('', 'selecione')
     for (const mes of this.ano.meses) {
-      selectMes.addOption(mes.nome, mes.nome)
+      this.selectMes.addOption(mes.nome, mes.nome)
     }
-    form.addChildElement(selectTipo.element)
-    const inputCategoria = new Input('categoria', 'text', 'categoria')
-    form.addChildElement(inputCategoria.element)
-    const inputValor = new Input('valor', 'number', 'valor')
-    form.addChildElement(inputValor.element)
+    form.addChildElement(this.selectTipo.element)
+    this.inputCategoria = new Input('categoria', 'text', 'categoria')
+    form.addChildElement(this.inputCategoria.element)
+    this.inputValor = new Input('valor', 'number', 'valor')
+    form.addChildElement(this.inputValor.element)
     const button = new Button('button', 'Adicionar Transação')
     button.addListener(() => this.adicionarLancamento())
     form.addChildElement(button.element)
@@ -101,4 +76,32 @@ export class Screen {
     const [body] = document.getElementsByTagName('body')
     body.appendChild(app.element)
   }
+
+  async adicionarLancamento() {
+    const selectMes = this.selectMes.getValue()
+    const selectTipo = this. selectTipo.getValue()
+    const inputCategoria = this.inputCategoria.getValue()
+    const inputValor = this.inputValor.getValue()
+    console.log(selectMes, selectTipo, inputCategoria, inputValor) 
+    const lancamento = Lancamento.create(selectMes, inputCategoria, selectTipo, inputValor)
+    this.ano.adicionarLancamento(selectMes, lancamento)
+    const lancamentoData = {
+      mes: selectMes,
+      tipo: selectTipo,
+      categoria: inputCategoria,
+      valor: inputValor
+    }
+    await this.lancamentoService.saveLancamento(lancamentoData)
+    this.ano.calcularSaldo()
+    this.renderizar()
+  }
+
+  async deletarLancamento(mes, lancamento) {
+    await this.lancamentoService.deleteLancamento(lancamento.idLancamento)
+    this.ano.deletarLancamento(mes, lancamento)
+    this.ano.calcularSaldo()
+    this.renderizar()
+  }
+
+
 }
