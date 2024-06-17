@@ -19,9 +19,6 @@ export class Screen {
   async init () {
     const { data: lancamentos } = await this.client.get("/api/lancamentos")
     const ano = new Ano()
-    ano.adicionarMes(new Mes('Janeiro'))
-    ano.adicionarMes(new Mes('Fevereiro'))
-    ano.adicionarMes(new Mes('Março'))
     for (const lancamento of lancamentos) {
       ano.adicionarLancamento(lancamento.mes, new Lancamento(lancamento.idLancamento, lancamento.mes, lancamento.categoria, lancamento.tipo, lancamento.valor))
     }
