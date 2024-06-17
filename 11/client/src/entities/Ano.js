@@ -16,6 +16,10 @@ export class Ano {
     }
   }
 
+  deletarLancamento(mes, lancamento) {
+    mes.removerLancamento(lancamento)
+  }
+
   calcularSaldo () {
     let saldoInicial = 0
     for (const mes of this.meses) {

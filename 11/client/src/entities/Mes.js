@@ -20,6 +20,10 @@ export class Mes {
     this.lancamentos.push(lancamento) 
   }
 
+  removerLancamento(lancamento) {
+    this.lancamentos.splice(this.lancamentos.indexOf(lancamento), 1)
+  }
+
   calcularSaldo() {
     this.totalizador.saldo = this.saldoInicial
     this.apurarReceitas()

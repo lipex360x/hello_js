@@ -2,7 +2,7 @@ export class LancamentoController {
   
   constructor (httpServer, lancamentoDAO) {
     httpServer.register('get', '/api/lancamentos', async (params, body) => {
-      const lancamentos = await lancamentoDAO.getLancamento()
+      const lancamentos = await lancamentoDAO.getLancamentos()
       return lancamentos
     })
 

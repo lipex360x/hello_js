@@ -23,7 +23,7 @@ export class Screen {
     ano.adicionarMes(new Mes('Fevereiro'))
     ano.adicionarMes(new Mes('Março'))
     for (const lancamento of lancamentos) {
-      ano.adicionarLancamento(lancamento.mes, new Lancamento(lancamento.categoria, lancamento.tipo, parseFloat(lancamento.valor)))
+      ano.adicionarLancamento(lancamento.mes, new Lancamento(lancamento.idLancamento, lancamento.mes, lancamento.categoria, lancamento.tipo, lancamento.valor))
     }
     ano.calcularSaldo()
     this.ano = ano
@@ -55,6 +55,13 @@ export class Screen {
     this.renderizar()
   }
 
+  async deletarLancamento(idLancamento) {
+    await this.client.delete(`http://localhost:3000/api/lancamentos/${idLancamento}`)
+    this.ano.calcularSaldo()
+    this.renderizar()
+  }
+
+
   renderizar () {
     document.getElementById('app').remove()
     const app = new Div('app')
@@ -73,7 +80,6 @@ export class Screen {
       selectMes.addOption(mes.nome, mes.nome)
     }
     form.addChildElement(selectTipo.element)
-  
     const inputCategoria = new Input('categoria', 'text', 'categoria')
     form.addChildElement(inputCategoria.element)
     const inputValor = new Input('valor', 'number', 'valor')
@@ -83,7 +89,6 @@ export class Screen {
     form.addChildElement(button.element)
     app.addChildElement(form.element)
     const grafico = new Chart('teste','teste')
-  
     for (const mes of this.ano.meses) {
       grafico.addColumn(mes.totalizador.saldo, mes.nome)
     }
@@ -94,7 +99,12 @@ export class Screen {
       const tabelaLancamentos = new Table('lancamentos')
       tabelaLancamentos.addRow('th', ['Categoria', 'Valor'])
       for (const lancamento of mes.lancamentos) {
-        tabelaLancamentos.addRow('td', [lancamento.categoria, formatarDinheiro(lancamento.getValorText())])
+        const button = new Button("delete-lancamento", "delete")
+        button.addListener(() => {
+          this.deletarLancamento(lancamento.idLancamento)
+          this.ano.deletarLancamento(mes, lancamento)
+        })
+        tabelaLancamentos.addRow('td', [lancamento.categoria, formatarDinheiro(lancamento.getValorText())], [button])
       }
       tabelaLancamentos.addRow('th', ['Juros', formatarDinheiro(mes.totalizador.juros)])
       tabelaLancamentos.addRow('th', ['Rendimentos', formatarDinheiro(mes.totalizador.rendimentos)])

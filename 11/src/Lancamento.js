@@ -9,8 +9,4 @@ export class Lancamento {
     this.tipo = tipo
     this.valor = valor
   }
-
-  getValorText () {
-    return this.tipo === 'receita' ? this.valor : this.valor * -1
-  }
 }
