@@ -1,3 +1,5 @@
+import cuid from 'cuid'
+
 export class Lancamento {
   constructor(idLancamento, mes, categoria, tipo, valor) {
     if (tipo !== "receita" && tipo !== "despesa") throw new Error('Tipo inválido [receita / despesa]')
@@ -12,5 +14,10 @@ export class Lancamento {
 
   getValorText () {
     return this.tipo === 'receita' ? this.valor : this.valor * -1
+  }
+
+  static create (mes, categoria, tipo, valor) {
+    const idLancamento = cuid()
+    return new Lancamento(idLancamento, mes, categoria, tipo, valor)
   }
 }

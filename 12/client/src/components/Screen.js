@@ -1,6 +1,5 @@
 import { Ano } from "../entities/Ano"
 import { Lancamento } from "../entities/Lancamento"
-import { Mes } from "../entities/Mes"
 import { formatarDinheiro } from "../misc/utils"
 import { Chart } from "./app/Chart"
 import { Div } from "./base/Div"
@@ -11,19 +10,18 @@ import { Input } from "./form/Input"
 import { Select } from "./form/Select"
 
 export class Screen {
-  constructor (client) {
-    this.client = client
+  constructor (lancamentoService) {
+    this.lancamentoService = lancamentoService
     this.init()
   }
 
   async init () {
-    const { data: lancamentos } = await this.client.get("/api/lancamentos")
-    const ano = new Ano()
+    const lancamentos = await this.lancamentoService.getLancamentos()
+    this.ano = new Ano()
     for (const lancamento of lancamentos) {
-      ano.adicionarLancamento(lancamento.mes, new Lancamento(lancamento.idLancamento, lancamento.mes, lancamento.categoria, lancamento.tipo, lancamento.valor))
+      this.ano.adicionarLancamento(lancamento.mes, new Lancamento(lancamento.idLancamento, lancamento.mes, lancamento.categoria, lancamento.tipo, lancamento.valor))
     }
-    ano.calcularSaldo()
-    this.ano = ano
+    this.ano.calcularSaldo()
     this.renderizar()
   }
 
@@ -32,18 +30,15 @@ export class Screen {
     const selectTipo = document.getElementById('tipo') 
     const inputCategoria = document.getElementById('categoria') 
     const inputValor = document.getElementById('valor')
-    const lancamento = new Lancamento(inputCategoria.value, selectTipo.value, parseFloat(inputValor.value))
+    const lancamento = Lancamento.create(inputMes.value, inputCategoria.value, selectTipo.value, parseFloat(inputValor.value))
     this.ano.adicionarLancamento(inputMes.value, lancamento)
-    await fetch('http://localhost:3000/api/lancamentos', { 
-      method: 'post',
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ 
-        mes: inputMes.value,
-        tipo: selectTipo.value,
-        categoria: inputCategoria.value,
-        valor: parseFloat(inputValor.value)
-      })
-    })
+    const lancamentoData = { 
+      mes: inputMes.value,
+      tipo: selectTipo.value,
+      categoria: inputCategoria.value,
+      valor: parseFloat(inputValor.value)
+    }
+    await this.lancamentoService.saveLancamento(lancamentoData)
     inputMes.value = ""
     selectTipo.value = ""
     inputValor.value = ""
@@ -53,12 +48,11 @@ export class Screen {
   }
 
   async deletarLancamento(mes, lancamento) {
-    await this.client.delete(`http://localhost:3000/api/lancamentos/${lancamento.idLancamento}`)
+    await this.lancamentoService.deleteLancamento(lancamento.idLancamento)
     this.ano.deletarLancamento(mes, lancamento)
     this.ano.calcularSaldo()
     this.renderizar()
   }
-
 
   renderizar () {
     document.getElementById('app').remove()
