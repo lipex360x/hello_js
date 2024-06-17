@@ -1,16 +1,16 @@
 export class LancamentoService {
   
-  constructor (client) {
-    this.client = client
+  constructor (httpClient) {
+    this.client = httpClient
   }
 
   async getLancamentos () {
-    const { data: lancamentos } = await this.client.get("/api/lancamentos")
+    const { data: lancamentos } = await this.client.get('/api/lancamentos')
     return lancamentos
   }
 
-  async saveLancamento (data) {
-    await this.client.post('/api/lancamentos', data)
+  async saveLancamento (lancamento) {
+    await this.client.post('/api/lancamentos', lancamento)
   }
 
   async deleteLancamento (idLancamento) {

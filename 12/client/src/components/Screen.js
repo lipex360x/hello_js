@@ -39,10 +39,6 @@ export class Screen {
       valor: parseFloat(inputValor.value)
     }
     await this.lancamentoService.saveLancamento(lancamentoData)
-    inputMes.value = ""
-    selectTipo.value = ""
-    inputValor.value = ""
-    inputCategoria.value = ""
     this.ano.calcularSaldo()
     this.renderizar()
   }

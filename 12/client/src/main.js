@@ -4,6 +4,7 @@ import { Screen } from './components/Screen'
 import { AxiosAdapter } from './components/adapters/AxiosAdapter'
 import { LancamentoService } from './services/LantamentoService'
 
-const client = new AxiosAdapter()
-const lancamentoService = new LancamentoService(client.register)
+const baseURL = 'http://localhost:3000'
+const client = new AxiosAdapter(baseURL)
+const lancamentoService = new LancamentoService(client)
 new Screen(lancamentoService)
