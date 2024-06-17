@@ -1,0 +1,20 @@
+version: '3.9'
+
+services:
+  postgres:
+    container_name: branas-hello-world
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: docker
+      POSTGRES_DB: app
+      PGDATA: /data/postgres
+    volumes:
+      - db:/var/lib/postgresql/data
+      - ./migration.sql:/docker-entrypoint-initdb.d/migrate.sql
+
+volumes:
+  db:
+    driver: local
