@@ -52,8 +52,9 @@ export class Screen {
     this.renderizar()
   }
 
-  async deletarLancamento(idLancamento) {
-    await this.client.delete(`http://localhost:3000/api/lancamentos/${idLancamento}`)
+  async deletarLancamento(mes, lancamento) {
+    await this.client.delete(`http://localhost:3000/api/lancamentos/${lancamento.idLancamento}`)
+    this.ano.deletarLancamento(mes, lancamento)
     this.ano.calcularSaldo()
     this.renderizar()
   }
@@ -98,8 +99,7 @@ export class Screen {
       for (const lancamento of mes.lancamentos) {
         const button = new Button("delete-lancamento", "delete")
         button.addListener(() => {
-          this.deletarLancamento(lancamento.idLancamento)
-          this.ano.deletarLancamento(mes, lancamento)
+          this.deletarLancamento(mes, lancamento)
         })
         tabelaLancamentos.addRow('td', [lancamento.categoria, formatarDinheiro(lancamento.getValorText())], [button])
       }
